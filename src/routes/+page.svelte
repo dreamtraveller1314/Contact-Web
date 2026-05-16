@@ -9,15 +9,20 @@
 </script>
 
 <main class="white-block">
-	<div class="contact-element hover:scale-105 transition-transform">
-		<div>
-			<p>{contacts[0].name}</p>
-			<p>{contacts[0].address}</p>
+	{#each contacts as contact}
+		<div class="contact-element hover:scale-105 transition-transform">
+			<div>
+				<p><strong>{contact.name}</strong></p>
+				<p>{contact.address}</p>
+			</div>
+			<div style="text-align: right;">
+				<p>{contact.phone}</p>
+			</div>
 		</div>
-		<div style="text-align: right;">
-			<p>{contacts[0].phone}</p>
-		</div>
-	</div>
+	{:else}
+		<p style="text-align: center;">No contacts saved yet.</p>
+	{/each}
+
 	<div style="text-align: center; margin-top: 1rem;">
 		<a href="/add-contact" class="button-style"> Add contact </a>
 	</div>
