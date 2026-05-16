@@ -1,13 +1,19 @@
 <script lang="ts">
-	let name: string = '';
-	let address: string = '';
-	let phone: string = '';
+    import { goto } from '$app/navigation';
+	let name = $state('');
+	let address = $state('');
+	let phone = $state('');
 
-	function save_contact() {
-		console.log("Button clicked!");
-		console.log("Name:", name);
-		console.log("Address:", address);
-		console.log("Phone:", phone);
+	async function save_contact() {
+		const response = await fetch('/api/add-contact', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ name, address, phone })
+		});
+		const result = await response.json();
+		console.log('Saved successfully:', result);
+
+		goto('/');
 	}
 </script>
 
