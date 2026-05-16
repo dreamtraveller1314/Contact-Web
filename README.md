@@ -1,42 +1,18 @@
-# sv
+# Contact Web
+A web version contact book
+https://contact-web-eight.vercel.app/
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+## Login Page
+<img width="591" height="651" alt="image" src="https://github.com/user-attachments/assets/57735e6b-7954-4230-b196-13126e3b3ce3" />
 
-## Creating a project
+## Home Page
+<img width="866" height="509" alt="image" src="https://github.com/user-attachments/assets/9ceb0cda-c110-4e27-a465-38998281db6a" />
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Add Contact
+<img width="736" height="820" alt="image" src="https://github.com/user-attachments/assets/95c3d8e2-dfd3-40a8-8627-7576091d3445" />
 
-```sh
-# create a new project
-npx sv create my-app
-```
+## Preview
+<img width="793" height="614" alt="image" src="https://github.com/user-attachments/assets/4d927b3a-0531-41dd-a4e6-ffaec1b92bf1" />
 
-To recreate this project with the same configuration:
-
-```sh
-# recreate this project
-npx sv@0.15.3 create --template minimal --types ts --install npm ./
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+## Details Info
+<img width="684" height="766" alt="image" src="https://github.com/user-attachments/assets/0b4c8270-6dba-4297-9271-d3aa157faf9a" />
