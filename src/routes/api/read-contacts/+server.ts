@@ -1,14 +1,17 @@
 import { json } from '@sveltejs/kit';
-import db from '$lib/server/db';
+import supabase from '$lib/server/db';
 
 export async function POST({ request }) {
-	const { userId } = await request.json();
+    const { userId } = await request.json();
 
-	if (!userId) {
-		return json({ contacts: [] });
-	}
+    const { data: contacts, error } = await supabase
+        .from('contacts')
+        .select('*')
+        .eq('user_id', userId);
 
-	const contacts = db.prepare('SELECT * FROM contacts WHERE user_id = @userId').all({ userId });
-    
-	return json({ contacts: contacts || [] });
+    if (error) {
+        return json({ success: false, contacts: [] }, { status: 500 });
+    }
+
+    return json({ success: true, contacts });
 }

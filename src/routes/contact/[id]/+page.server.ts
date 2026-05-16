@@ -1,14 +1,20 @@
-import db from '$lib/server/db';
 import { error } from '@sveltejs/kit';
+import supabase from '$lib/server/db';
 
-export function load({ params }) {
-    const contactId = params.id;
+export async function load({ params }) {
+    const { id } = params;
 
-    const contact = db.prepare('SELECT * FROM contacts WHERE id = ?').get(contactId) as any;
+    const { data: contact, error: dbError } = await supabase
+        .from('contacts')
+        .select('*')
+        .eq('id', id)
+        .single();
 
-    if (!contact) {
+    if (dbError || !contact) {
         throw error(404, 'Contact not found');
     }
 
-    return { contact };
+    return {
+        contact
+    };
 }

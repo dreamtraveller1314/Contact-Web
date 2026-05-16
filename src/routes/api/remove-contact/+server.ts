@@ -1,11 +1,17 @@
 import { json } from '@sveltejs/kit';
-import db from '$lib/server/db';
+import supabase from '$lib/server/db';
 
 export async function POST({ request }) {
-	const { id } = await request.json();
+    const { id } = await request.json();
 
-	const statement = db.prepare('DELETE FROM contacts WHERE id = ?');
-	statement.run(id);
+    const { error } = await supabase
+        .from('contacts')
+        .delete()
+        .eq('id', id);
 
-	return json({ success: true });
+    if (error) {
+        return json({ success: false, message: error.message }, { status: 500 });
+    }
+
+    return json({ success: true });
 }

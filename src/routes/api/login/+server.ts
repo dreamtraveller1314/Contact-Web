@@ -1,24 +1,36 @@
 import { json } from '@sveltejs/kit';
-import db from '$lib/server/db';
+import supabase from '$lib/server/db';
 
 export async function POST({ request }) {
-	const { username, password } = await request.json();
+    const { username, password } = await request.json();
 
-	if (!username || !password) {
-		return json({ success: false, message: 'Missing fields' }, { status: 400 });
-	}
-	const user = db.prepare('SELECT * FROM users WHERE username = @username').get({ username }) as any;
+    const { data: existingUser, error: fetchError } = await supabase
+        .from('users')
+        .select('*')
+        .eq('username', username)
+        .single();
 
-	if (!user) {
-		const insert = db.prepare('INSERT INTO users (username, password) VALUES (@username, @password)');
-		const result = insert.run({ username, password });
-		
-		return json({ success: true, userId: result.lastInsertRowid });
-	} {
-		if (user.password === password) {
-			return json({ success: true, userId: user.id });
-		} else {
-			return json({ success: false, message: 'Incorrect password!' }, { status: 401 });
-		}
-	}
+    if (fetchError && fetchError.code !== 'PGRST116') { 
+        return json({ success: false, message: 'Database lookup error.' }, { status: 500 });
+    }
+
+    if (existingUser) {
+        if (existingUser.password === password) {
+            return json({ success: true, userId: existingUser.id });
+        } else {
+            return json({ success: false, message: 'Incorrect password.' });
+        }
+    }
+
+    const { data: newUser, error: insertError } = await supabase
+        .from('users')
+        .insert([{ username, password }])
+        .select()
+        .single();
+
+    if (insertError) {
+        return json({ success: false, message: 'Failed to create user account.' }, { status: 500 });
+    }
+
+    return json({ success: true, userId: newUser.id });
 }
