@@ -1,27 +1,6 @@
-import Database from 'better-sqlite3';
+import { createClient } from '@supabase/supabase-js';
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from '$env/static/private';
 
-const db = new Database('local.db');
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-db.exec(`
-  CREATE TABLE IF NOT EXISTS users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT NOT NULL UNIQUE,
-    password TEXT NOT NULL
-  )
-`);
-
-db.exec(`
-  CREATE TABLE IF NOT EXISTS contacts (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NOT NULL,
-    name TEXT NOT NULL,
-    phone TEXT,
-    email TEXT,
-    address TEXT,
-    job TEXT,
-    notes TEXT,
-    FOREIGN KEY (user_id) REFERENCES users(id)
-  )
-`);
-
-export default db;
+export default supabase;
