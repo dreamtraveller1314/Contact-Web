@@ -1,5 +1,6 @@
 <script lang="ts">
     import { onMount } from 'svelte';
+    import { goto } from '$app/navigation';
 
     type Contact = {
         name: string;
@@ -8,15 +9,16 @@
     };
 
     let contacts: Contact[] = $state([]);
-    
-    async function read_contacts() {
-        console.log('Reading contacts from database...');
+    let currentUsername = $state('');
+
+    async function read_contacts(userId: string) {
         const response = await fetch('/api/read-contacts', {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' }
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId })
         });
         const result = await response.json();
-        return result.contacts;
+        return result.contacts || [];
     }
 
     async function remove_contact(name: string, address: string, phone: string) {
@@ -25,14 +27,34 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name, address, phone })
         });
-        const result = await response.json();
-        contacts = await read_contacts();
+        
+        const savedUserId = localStorage.getItem('userId');
+        if (savedUserId) {
+            contacts = await read_contacts(savedUserId);
+        }
+    }
+
+    function handleLogout() {
+        localStorage.clear();
+        goto('/login');
     }
 
     onMount(async () => {
-        contacts = await read_contacts();
+        const savedUserId = localStorage.getItem('userId');
+        currentUsername = localStorage.getItem('username') || '';
+
+        if (!savedUserId) {
+            goto('/login');
+        } else {
+            contacts = await read_contacts(savedUserId);
+        }
     });
 </script>
+
+<div>
+	<span>Logged in as: <strong>{currentUsername}</strong></span>
+	<button onclick={handleLogout}>Logout</button>
+</div>
 
 <main class="white-block">
 	<h1>My Contact Book</h1>

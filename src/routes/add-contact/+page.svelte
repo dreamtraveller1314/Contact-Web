@@ -5,10 +5,11 @@
 	let phone = $state('');
 
 	async function save_contact() {
+		const userId = localStorage.getItem('userId');
 		const response = await fetch('/api/add-contact', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ name, address, phone })
+			body: JSON.stringify({ userId, name, address, phone })
 		});
 		const result = await response.json();
 		console.log('Saved successfully:', result);

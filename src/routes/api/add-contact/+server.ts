@@ -2,13 +2,13 @@ import { json } from '@sveltejs/kit';
 import db from '$lib/server/db';
 
 export async function POST({ request }) {
-	const { name, address, phone } = await request.json();
+	// Extract userId along with contact info
+	const { userId, name, address, phone } = await request.json();
 
 	const statement = db.prepare(
-		'INSERT INTO contacts (name, address, phone) VALUES (@name, @address, @phone)'
+		'INSERT INTO contacts (user_id, name, address, phone) VALUES (@userId, @name, @address, @phone)'
 	);
-	
-	statement.run({ name, address, phone });
+	statement.run({ userId, name, address, phone });
 
 	return json({ success: true }, { status: 201 });
 }
