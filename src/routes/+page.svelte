@@ -51,31 +51,33 @@
     });
 </script>
 
-<div>
-	<span>Logged in as: <strong>{currentUsername}</strong></span>
-	<button onclick={handleLogout}>Logout</button>
-</div>
+<div class="app-container">
+	<header class="navbar">
+		<span>Logged in as: <strong>{currentUsername}</strong></span>
+		<button onclick={handleLogout} class="btn-text">Logout</button>
+	</header>
 
-<main class="white-block">
-	<h1>My Contact Book</h1>
+	<main>
+		<h1 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem;">Contacts</h1>
 
-	{#each contacts as contact}
-		<div class="contact-element hover:scale-105 transition-transform" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; padding: 0.5rem; border: 1px solid #ccc; width: 100%; background: transparent; text-align: left; font-family: inherit;">
-			<div onclick={() => goto(`/contact/${contact.id}`)} role="presentation" style="cursor: pointer; flex-grow: 1;">
-				<p><strong>{contact.name}</strong></p>
+		{#each contacts as contact}
+			<div class="contact-row">
+				<div onclick={() => goto(`/contact/${contact.id}`)} role="presentation" class="clickable-area">
+					<p class="contact-name">{contact.name}</p>
+					<p class="contact-meta">{contact.phone}</p>
+				</div>
+				<div>
+					<button onclick={(e) => { e.stopPropagation(); remove_contact(contact.id); }} class="btn-trash" title="Delete Contact">
+						🗑️
+					</button>
+				</div>
 			</div>
-			<div style="text-align: right; display: flex; align-items: center; gap: 1rem;">
-				<p>{contact.phone}</p>
-				<button onclick={(e) => { e.stopPropagation(); remove_contact(contact.id); }} style="background: none; border: none; cursor: pointer; font-size: 1.2rem;">
-					🗑️
-				</button>
-			</div>
+		{:else}
+			<p style="text-align: center; color: var(--text-muted); padding: 2rem 0; font-size: 0.9rem;">Your contact book is empty.</p>
+		{/each}
+
+		<div style="margin-top: 2rem; text-align: left;">
+			<a href="/add-contact" class="btn-primary">Add Contact</a>
 		</div>
-	{:else}
-		<p style="text-align: center;">Your contact book is empty!</p>
-	{/each}
-
-	<div style="text-align: center; margin-top: 1rem;">
-		<a href="/add-contact" class="button-style"> Add contact </a>
-	</div>
-</main>
+	</main>
+</div>

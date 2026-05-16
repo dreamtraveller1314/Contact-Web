@@ -30,22 +30,45 @@
 	}
 </script>
 
-<main class="white-block">
-	<h2>Add New Contact</h2>
-	<div class="contact-save" style="display: flex; flex-direction: column; gap: 0.5rem;">
-		<input bind:value={name} placeholder="Name" class="text-input" />
-		<input bind:value={phone} placeholder="Phone number" class="text-input" />
-		<input bind:value={email} placeholder="Email" class="text-input" />
-		<input bind:value={address} placeholder="Address" class="text-input" />
-		<input bind:value={job} placeholder="Job Title" class="text-input" />
-		<textarea bind:value={notes} placeholder="Notes" class="text-input" rows="4"></textarea>
-	</div>
-	
-	<div style="text-align: center; margin-top: 1rem;">
-		<button onclick={save_contact} class="button-style"> Save </button>
-	</div>
+<div class="app-container">
+	<main>
+		<h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem;">New Contact</h2>
+		
+		<div style="display: flex; flex-direction: column; gap: 1rem; background: var(--panel-bg); border: 1px solid var(--border-color); padding: 1.5rem; border-radius: 4px;">
+			<div class="form-group">
+				<label for="name">Name</label>
+				<input id="name" bind:value={name} class="form-input" />
+			</div>
+			
+			<div class="form-group">
+				<label for="phone">Phone Number</label>
+				<input id="phone" bind:value={phone} class="form-input" />
+			</div>
+			
+			<div class="form-group">
+				<label for="email">Email Address</label>
+				<input id="email" bind:value={email} type="email" class="form-input" />
+			</div>
+			
+			<div class="form-group">
+				<label for="address">Postal Address</label>
+				<input id="address" bind:value={address} class="form-input" />
+			</div>
+			
+			<div class="form-group">
+				<label for="job">Job Title</label>
+				<input id="job" bind:value={job} class="form-input" />
+			</div>
+			
+			<div class="form-group">
+				<label for="notes">Personal Notes</label>
+				<textarea id="notes" bind:value={notes} class="form-input" rows="4"></textarea>
+			</div>
 
-	<div style="text-align: center; margin-top: 1rem;">
-		<a href="/" style="color: gray; text-decoration: none;">← Back to Home</a>
-	</div>
-</main>
+			<div style="margin-top: 1rem; display: flex; gap: 1.5rem; align-items: center;">
+				<button onclick={save_contact} class="btn-primary">Save Contact</button>
+				<a href="/" class="btn-text">Cancel</a>
+			</div>
+		</div>
+	</main>
+</div>
