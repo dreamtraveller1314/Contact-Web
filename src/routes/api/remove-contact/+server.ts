@@ -2,12 +2,10 @@ import { json } from '@sveltejs/kit';
 import db from '$lib/server/db';
 
 export async function POST({ request }) {
-    const { name, address, phone } = await request.json();
+	const { id } = await request.json();
 
-    const statement = db.prepare(
-        'DELETE FROM contacts WHERE name = @name AND address = @address AND phone = @phone'
-    );
-    statement.run({ name, address, phone });
+	const statement = db.prepare('DELETE FROM contacts WHERE id = ?');
+	statement.run(id);
 
-    return json({ success: true });
+	return json({ success: true });
 }

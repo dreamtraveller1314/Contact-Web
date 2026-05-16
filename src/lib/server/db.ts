@@ -15,8 +15,11 @@ db.exec(`
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
     name TEXT NOT NULL,
-    address TEXT,
     phone TEXT,
+    email TEXT,
+    address TEXT,
+    job TEXT,
+    notes TEXT,
     FOREIGN KEY (user_id) REFERENCES users(id)
   )
 `);

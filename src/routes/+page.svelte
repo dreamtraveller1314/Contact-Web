@@ -3,8 +3,8 @@
     import { goto } from '$app/navigation';
 
     type Contact = {
+        id: number;
         name: string;
-        address: string;
         phone: string;
     };
 
@@ -21,11 +21,11 @@
         return result.contacts || [];
     }
 
-    async function remove_contact(name: string, address: string, phone: string) {
+    async function remove_contact(id: number) {
         const response = await fetch('/api/remove-contact', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, address, phone })
+            body: JSON.stringify({ id })
         });
         
         const savedUserId = localStorage.getItem('userId');
@@ -60,16 +60,15 @@
 	<h1>My Contact Book</h1>
 
 	{#each contacts as contact}
-		<div class="contact-element hover:scale-105 transition-transform" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; padding: 0.5rem; border: 1px solid #ccc;">
-			<div>
+		<div class="contact-element hover:scale-105 transition-transform" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; padding: 0.5rem; border: 1px solid #ccc; width: 100%; background: transparent; text-align: left; font-family: inherit;">
+			<div onclick={() => goto(`/contact/${contact.id}`)} role="presentation" style="cursor: pointer; flex-grow: 1;">
 				<p><strong>{contact.name}</strong></p>
-				<p>{contact.address}</p>
 			</div>
 			<div style="text-align: right; display: flex; align-items: center; gap: 1rem;">
 				<p>{contact.phone}</p>
-                <button onclick={() => remove_contact(contact.name, contact.address, contact.phone)} style="background: none; border: none; cursor: pointer; font-size: 1.2rem;">
-                    🗑️
-                </button>
+				<button onclick={(e) => { e.stopPropagation(); remove_contact(contact.id); }} style="background: none; border: none; cursor: pointer; font-size: 1.2rem;">
+					🗑️
+				</button>
 			</div>
 		</div>
 	{:else}
