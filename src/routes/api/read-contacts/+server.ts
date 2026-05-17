@@ -7,7 +7,8 @@ export async function POST({ request }) {
     const { data: contacts, error } = await supabase
         .from('contacts')
         .select('*')
-        .eq('user_id', userId);
+        .eq('user_id', userId)
+        .order('name', { ascending: true });
 
     if (error) {
         return json({ success: false, contacts: [] }, { status: 500 });
